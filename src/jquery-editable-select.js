@@ -73,6 +73,7 @@
 		this.utility.trigger('select', $li);
 	};
 	EditableSelect.prototype.add = function (text, index, attrs, data) {
+		
 		var $li     = $('<li>').html(text);
 		var $option = $('<option>').text(text);
 		var last    = this.$list.find('li').length;
@@ -89,6 +90,7 @@
 		this.utility.setAttributes($li, attrs, data);
 		this.utility.setAttributes($option, attrs, data);
 		this.filter();
+		return $li;
 	};
 	EditableSelect.prototype.remove = function (index) {
 		var last = this.$list.find('li').length;
@@ -156,6 +158,7 @@
 					var nextNode = visibles.filter('li.selected').prev();
 					var nextIndex = visibles.index(nextNode.length > 0 ? nextNode : visibles.last());
 					that.highlight(nextIndex);
+					that.es.select(nextNode);
 					e.preventDefault();
 					break;
 				case 40: // Down
@@ -163,11 +166,29 @@
 					var nextNode = visibles.filter('li.selected').next();
 					var nextIndex = visibles.index(nextNode.length > 0 ? nextNode : visibles.first());
 					that.highlight(nextIndex);
+					that.es.select(nextNode);
 					e.preventDefault();
 					break;
 				case 13: // Enter
 					if (that.es.$list.is(':visible')) {
-						that.es.select(that.es.$list.find('li.selected'));
+						//check existing item
+					var sameTextLI = that.es.$list.find('li').filter(function(indx){
+						return (that.es.$input.val() == $(this).text());
+					});
+						if (sameTextLI.length!=0){ //Если тексты совпадают, То выбираем
+							that.es.select(sameTextLI);//that.es.$list.find('li.selected'));
+							that.es.hide(); //Hide 
+						}
+						else{
+							var newId=that.es.options.newItemId||-1;
+							if (typeof that.es.options.newItemId === "function") {
+								newId=that.es.options.newItemId();
+							}
+							var newItem = that.es.add(that.es.$input.val(), 0, [{name:'value', value:newId}, {name:'selected', value:true}]);
+							that.es.select(newItem);
+							that.es.hide(); //Hide 
+							//Создаем новый!
+						}
 						e.preventDefault();
 					}
 					break;
