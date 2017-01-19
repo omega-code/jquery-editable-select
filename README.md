@@ -13,6 +13,10 @@ It scales down to a real select list when javascript is not available.
     </a>
 </p>
 
+# Main difference from original
+
+$(listTarget).editableSelect({ filter: false, newItemId: function () { return '00000000-0000-0000-0000-000000000000' } });
+
 # Demo
 
 See demos here: http://indrimuska.github.io/jquery-editable-select/
