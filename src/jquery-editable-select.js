@@ -170,7 +170,7 @@
 					e.preventDefault();
 					break;
 				case 13: // Enter
-					if (that.es.$list.is(':visible')) {
+					//if (that.es.$list.is(':visible')) {
 						//check existing item
 					var sameTextLI = that.es.$list.find('li').filter(function(indx){
 						return (that.es.$input.val() == $(this).text());
@@ -190,7 +190,7 @@
 							//Создаем новый!
 						}
 						e.preventDefault();
-					}
+					//}
 					break;
 				case 9:  // Tab
 				case 27: // Esc
